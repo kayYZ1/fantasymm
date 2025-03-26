@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
-const startMapMaking = () => {
+const pushToMap = () => {
   router.push('/map')
 }
 </script>
@@ -27,7 +27,7 @@ const startMapMaking = () => {
         </p>
       </div>
 
-      <button class="medieval-button" @click="startMapMaking">Begin Thy Quest</button>
+      <button class="medieval-button" @click="pushToMap">Begin Thy Quest</button>
     </main>
 
     <footer class="footer">
