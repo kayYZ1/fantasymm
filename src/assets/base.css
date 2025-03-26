@@ -1,0 +1,89 @@
+/* base.css */
+/* CSS Reset */
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+  vertical-align: baseline;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.6;
+  font-size: 16px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* Medieval Theme Variables */
+:root {
+  --color-parchment: #f4e8c1;
+  --color-parchment-dark: #e0d2a3;
+  --color-wood: #6b4e31;
+  --color-wood-dark: #3c2f2f;
+  --color-ink: #2c1f17;
+  --color-accent: #8b5a2b;
+  --color-gold: #ffd700;
+
+  --color-background: var(--color-parchment);
+  --color-text: var(--color-ink);
+  --color-heading: var(--color-wood-dark);
+  --color-border: var(--color-wood);
+  --color-button: var(--color-wood);
+  --color-button-hover: var(--color-accent);
+
+  --font-primary: 'Cinzel', serif;
+  --font-secondary: 'MedievalSharp', cursive;
+
+  --padding-base: 1rem;
+  --border-radius: 8px;
+}
+
+/* Base Styles */
+body {
+  background: #d9c89e; /* Slightly darker for contrast */
+  color: var(--color-text);
+  font-family: var(--font-secondary), sans-serif;
+}

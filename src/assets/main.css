@@ -1,0 +1,37 @@
+/* main.css */
+@import './base.css';
+
+#app {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: var(--padding-base);
+  background:
+    url('https://www.transparenttextures.com/patterns/paper-fibers.png'),
+    linear-gradient(to bottom, var(--color-parchment), var(--color-parchment-dark));
+  display: flex;
+  flex-direction: column;
+  overflow: auto; /* Allow scrolling if content overflows */
+  border: 2px solid var(--color-wood-dark);
+}
+
+/* Medieval Scrollbar Styling for WebKit browsers (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-wood); /* Wooden track */
+  border-left: 2px solid var(--color-wood-dark);
+  border-right: 2px solid var(--color-wood-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-parchment); /* Parchment-like thumb */
+  border: 2px solid var(--color-wood-dark); /* Wooden border around thumb */
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-parchment-dark);
+}
