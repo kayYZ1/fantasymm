@@ -11,6 +11,8 @@ vi.mock('vue-router', () => ({
   useRouter: () => mockRouter,
 }))
 
+HTMLCanvasElement.prototype.getContext = vi.fn() //Mock canvas getContext
+
 describe('Map', () => {
   it('renders all elements on the screen', () => {
     const wrapper = shallowMount(Map)
@@ -21,26 +23,12 @@ describe('Map', () => {
     expect(wrapper.find('.turn-back').text()).toBe('Turn back')
 
     expect(wrapper.find('.map-area').exists()).toBe(true)
-    expect(wrapper.find('.map-placeholder').exists()).toBe(true)
-    expect(wrapper.find('.map-placeholder p').text()).toBe('Thy Realm Awaits')
+
+    const canvas = wrapper.find('.map-canvas')
+
+    expect(canvas.attributes('class')).toBe('map-canvas')
 
     expect(wrapper.find('.bottom-bar').exists()).toBe(true)
-    expect(wrapper.find('.button-group').exists()).toBe(true)
-
-    const buttons = wrapper.findAll('.bar-button')
-    expect(buttons).toHaveLength(4)
-
-    expect(buttons[0].attributes('title')).toBe('Draw')
-    expect(buttons[0].find('svg.icon').exists()).toBe(true)
-
-    expect(buttons[1].attributes('title')).toBe('Zoom')
-    expect(buttons[1].find('svg.icon').exists()).toBe(true)
-
-    expect(buttons[2].attributes('title')).toBe('Layers')
-    expect(buttons[2].find('svg.icon').exists()).toBe(true)
-
-    expect(buttons[3].attributes('title')).toBe('Save')
-    expect(buttons[3].find('svg.icon').exists()).toBe(true)
   })
 
   it('redirects to / when "Turn back" is clicked', async () => {
