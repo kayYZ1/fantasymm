@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
-import Toolbar from '@/components/Toolbar.vue'
+import Toolbar from '@/components/ToolbarComponent.vue'
 
 const router = useRouter()
 
@@ -12,6 +12,11 @@ onMounted(() => {
   if (mapCanvas.value) {
     const canvas = mapCanvas.value
     const ctx = canvas.getContext('2d')!
+
+    if (!ctx) {
+      return
+    }
+
     canvas.width = canvas.offsetWidth
     canvas.height = canvas.offsetHeight
   }
