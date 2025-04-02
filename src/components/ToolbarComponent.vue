@@ -1,5 +1,11 @@
 <script setup lang="ts">
-const handleDraw = () => console.log('Draw tool activated')
+const emit = defineEmits(['open-modal'])
+
+const handleDraw = () => {
+  console.log('Pencil clicked') // Debug
+  emit('open-modal')
+}
+
 const handleZoom = () => console.log('Zoom tool activated')
 const handleLayers = () => console.log('Layers tool activated')
 const handleSave = () => console.log('Save map activated')

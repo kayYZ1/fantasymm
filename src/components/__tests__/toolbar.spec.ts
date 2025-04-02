@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
 
-import Toolbar from '../Toolbar.vue'
+import Toolbar from '../ToolbarComponent.vue'
 
 describe('Toolbar component tests', () => {
   it('renders all buttons with correct classes', () => {
@@ -24,7 +24,7 @@ describe('Toolbar component tests', () => {
     const drawButton = wrapper.findAll('.bar-button')[0]
     await drawButton.trigger('click')
 
-    expect(consoleLogSpy).toHaveBeenCalledWith('Draw tool activated')
+    expect(consoleLogSpy).toHaveBeenCalledWith('Pencil clicked')
   })
 
   it('handles zoom button click', async () => {

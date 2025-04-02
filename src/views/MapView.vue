@@ -3,27 +3,30 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 import Toolbar from '@/components/ToolbarComponent.vue'
+import TileModal from '@/components/TileModalComponent.vue'
+import RecentTilesComponent from '@/components/RecentTilesComponent.vue'
 
 const router = useRouter()
 
 const mapCanvas = ref<HTMLCanvasElement | null>(null)
+const showModal = ref(false)
 
 onMounted(() => {
   if (mapCanvas.value) {
     const canvas = mapCanvas.value
-    const ctx = canvas.getContext('2d')!
-
-    if (!ctx) {
-      return
-    }
-
     canvas.width = canvas.offsetWidth
     canvas.height = canvas.offsetHeight
   }
 })
 
-const turnBack = () => {
-  router.push('/')
+const turnBack = () => router.push('/')
+
+const openTileModal = () => {
+  showModal.value = true
+}
+
+const closeModal = () => {
+  showModal.value = false
 }
 </script>
 
@@ -31,11 +34,13 @@ const turnBack = () => {
   <div class="map-container">
     <p class="turn-back" @click="turnBack">Turn back</p>
     <section class="map-area">
-      <canvas ref="mapCanvas" class="map-canvas"> </canvas>
+      <canvas ref="mapCanvas" class="map-canvas"></canvas>
     </section>
     <footer class="bottom-bar">
-      <Toolbar />
+      <RecentTilesComponent />
+      <Toolbar @open-modal="openTileModal" />
     </footer>
+    <TileModal :is-open="showModal" @close="closeModal" />
   </div>
 </template>
 
@@ -97,7 +102,7 @@ const turnBack = () => {
   height: 60px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   border-radius: var(--border-radius);
   padding: 0 1rem;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
