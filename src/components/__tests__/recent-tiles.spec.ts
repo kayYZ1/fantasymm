@@ -29,7 +29,8 @@ describe('RecentTiles component tests', () => {
       recentTilesWithSvgs: [],
     }
 
-    vi.mocked(useTileStore).mockReturnValue(tileStoreMock as any)
+    // @ts-expect-error The mock doesn't need to implement the entire store interface
+    vi.mocked(useTileStore).mockReturnValue(tileStoreMock)
   })
 
   it('displays message when no recent tiles exist', () => {
