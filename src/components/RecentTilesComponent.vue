@@ -54,4 +54,10 @@ const selectTile = (tileName: string) => {
   height: 100%;
   object-fit: contain;
 }
+
+.no-tiles {
+  color: #fff;
+  text-align: center;
+  width: 100%;
+}
 </style>

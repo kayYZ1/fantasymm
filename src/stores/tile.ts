@@ -11,7 +11,7 @@ export const useTileStore = defineStore('tileStore', () => {
     selectedTile.value = tileName
 
     const updatedRecent = [tileName, ...recentTiles.value.filter((t) => t !== tileName)]
-    recentTiles.value = updatedRecent.slice(0, 7)
+    recentTiles.value = updatedRecent.slice(0, 7) // Improve performance later
   }
 
   const clearSelectedTile = () => {

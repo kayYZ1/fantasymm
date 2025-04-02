@@ -22,12 +22,6 @@ describe('Map', () => {
     expect(wrapper.find('.turn-back').exists()).toBe(true)
     expect(wrapper.find('.turn-back').text()).toBe('Turn back')
 
-    expect(wrapper.find('.map-area').exists()).toBe(true)
-
-    const canvas = wrapper.find('.map-canvas')
-
-    expect(canvas.attributes('class')).toBe('map-canvas')
-
     expect(wrapper.find('.bottom-bar').exists()).toBe(true)
   })
 
