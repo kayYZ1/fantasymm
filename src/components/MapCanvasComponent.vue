@@ -1,20 +1,15 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 
 import { useTileStore } from '@/stores/tile'
 
 const tileStore = useTileStore()
 
 const mapCanvas = ref<HTMLCanvasElement | null>(null)
-const tileSize = 32
+const isDragging = ref(false)
+const cachedCanvasMap = ref<HTMLImageElement | null>(null)
 
-onMounted(() => {
-  if (mapCanvas.value) {
-    const canvas = mapCanvas.value
-    canvas.width = canvas.offsetWidth
-    canvas.height = canvas.offsetHeight
-  }
-})
+const tileSize = 16
 
 onMounted(() => {
   if (mapCanvas.value) {
@@ -32,8 +27,25 @@ onMounted(() => {
   }
 })
 
-const paintTile = (event: MouseEvent) => {
-  if (!mapCanvas.value || !tileStore.selectedTileSvg) {
+const cacheSelectedTile = () => {
+  if (!tileStore.selectedTileSvg) {
+    return
+  }
+
+  const svgString = tileStore.selectedTileSvg
+  const img = new Image()
+  const svgBlob = new Blob([svgString], { type: 'image/svg+xml' })
+  const url = URL.createObjectURL(svgBlob)
+
+  img.onload = () => {
+    cachedCanvasMap.value = img
+    URL.revokeObjectURL(url)
+  }
+  img.src = url
+}
+
+const paintTileAt = (x: number, y: number) => {
+  if (!mapCanvas.value || !cachedCanvasMap.value) {
     return
   }
 
@@ -43,29 +55,56 @@ const paintTile = (event: MouseEvent) => {
     return
   }
 
-  const rect = canvas.getBoundingClientRect()
-  const x = event.clientX - rect.left
-  const y = event.clientY - rect.top
-
   const gridX = Math.floor(x / tileSize) * tileSize
   const gridY = Math.floor(y / tileSize) * tileSize
 
-  const svgString = tileStore.selectedTileSvg
-  const img = new Image()
-  const svgBlob = new Blob([svgString], { type: 'image/svg+xml' })
-  const url = URL.createObjectURL(svgBlob)
+  ctx.drawImage(cachedCanvasMap.value, gridX, gridY, tileSize, tileSize)
+}
 
-  img.onload = () => {
-    ctx.drawImage(img, gridX, gridY, tileSize, tileSize)
-    URL.revokeObjectURL(url) // Clean up
+watch(
+  () => {
+    return tileStore.selectedTileSvg
+  },
+  () => {
+    cacheSelectedTile()
+  },
+  { immediate: true },
+)
+
+const startPainting = (event: MouseEvent) => {
+  isDragging.value = true
+  const rect = mapCanvas.value!.getBoundingClientRect()
+  const x = event.clientX - rect.left
+  const y = event.clientY - rect.top
+  paintTileAt(x, y)
+}
+
+const paintWhileDragging = (event: MouseEvent) => {
+  if (!isDragging.value) {
+    return
   }
-  img.src = url
+
+  const rect = mapCanvas.value!.getBoundingClientRect()
+  const x = event.clientX - rect.left
+  const y = event.clientY - rect.top
+  paintTileAt(x, y)
+}
+
+const stopPainting = () => {
+  isDragging.value = false
 }
 </script>
 
 <template>
   <section class="map-area">
-    <canvas ref="mapCanvas" class="map-canvas" @click="paintTile" />
+    <canvas
+      ref="mapCanvas"
+      class="map-canvas"
+      @mousedown="startPainting"
+      @mousemove="paintWhileDragging"
+      @mouseup="stopPainting"
+      @mouseleave="stopPainting"
+    />
   </section>
 </template>
 
