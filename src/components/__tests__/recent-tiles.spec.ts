@@ -25,7 +25,7 @@ describe('RecentTilesComponent', () => {
       recentTilesWithPreview: [],
     }
 
-    //@ts-ignore Does not need full store interface
+    //@ts-expect-error Does not need full store interface
     vi.mocked(useTileStore).mockReturnValue(tileStoreMock)
   })
 
