@@ -1,23 +1,26 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-
 import { useTileStore } from '@/stores/tile'
+
+import tileColors from '@/utils/map-tiles'
+import varyColor from '@/utils/vary-color'
 
 const tileStore = useTileStore()
 
 const mapCanvas = ref<HTMLCanvasElement | null>(null)
-const isDragging = ref(false)
-const cachedCanvasMap = ref<HTMLImageElement | null>(null)
+const isPainting = ref(false)
+const cachedTileColor = ref<string>('')
 
-const tileSize = 16
+const brushDensity = ref(5)
+const stampSize = ref(16)
+const randomizeRotation = ref(true)
+const jitterAmount = ref(8)
 
 onMounted(() => {
   if (mapCanvas.value) {
     const canvas = mapCanvas.value
     const ctx = canvas.getContext('2d')
-    if (!ctx) {
-      return
-    }
+    if (!ctx) return
 
     canvas.width = canvas.offsetWidth
     canvas.height = canvas.offsetHeight
@@ -27,71 +30,78 @@ onMounted(() => {
   }
 })
 
-const cacheSelectedTile = () => {
-  if (!tileStore.selectedTileSvg) {
+const cacheSelectedTileColor = () => {
+  const selectedKey = tileStore.selectedTileKey
+  if (!selectedKey || !tileColors[selectedKey]) {
+    cachedTileColor.value = ''
     return
   }
-
-  const svgString = tileStore.selectedTileSvg
-  const img = new Image()
-  const svgBlob = new Blob([svgString], { type: 'image/svg+xml' })
-  const url = URL.createObjectURL(svgBlob)
-
-  img.onload = () => {
-    cachedCanvasMap.value = img
-    URL.revokeObjectURL(url)
-  }
-  img.src = url
+  cachedTileColor.value = tileColors[selectedKey]
 }
 
-const paintTileAt = (x: number, y: number) => {
-  if (!mapCanvas.value || !cachedCanvasMap.value) {
-    return
-  }
+const paintBrushStroke = (mouseX: number, mouseY: number) => {
+  if (!mapCanvas.value || !cachedTileColor.value) return
 
   const canvas = mapCanvas.value
   const ctx = canvas.getContext('2d')
-  if (!ctx) {
-    return
+  if (!ctx) return
+
+  for (let i = 0; i < brushDensity.value; i++) {
+    const offsetX = (Math.random() - 0.5) * 2 * jitterAmount.value
+    const offsetY = (0.5 - Math.random()) * 2 * jitterAmount.value
+    const drawX = mouseX + offsetX
+    const drawY = mouseY + offsetY
+
+    ctx.save()
+    ctx.translate(drawX, drawY)
+    if (randomizeRotation.value) {
+      ctx.rotate(Math.random() * Math.PI * 2)
+    }
+
+    ctx.fillStyle = varyColor(cachedTileColor.value, 5)
+    ctx.beginPath()
+    ctx.arc(0, 0, stampSize.value / 2, 0, Math.PI * 2)
+    ctx.fill()
+
+    ctx.restore()
   }
-
-  const gridX = Math.floor(x / tileSize) * tileSize
-  const gridY = Math.floor(y / tileSize) * tileSize
-
-  ctx.drawImage(cachedCanvasMap.value, gridX, gridY, tileSize, tileSize)
 }
 
-watch(
-  () => {
-    return tileStore.selectedTileSvg
-  },
-  () => {
-    cacheSelectedTile()
-  },
-  { immediate: true },
-)
+watch(() => tileStore.selectedTileKey, cacheSelectedTileColor, { immediate: true })
+
+const getMousePos = (event: MouseEvent): { x: number; y: number } | null => {
+  if (!mapCanvas.value) return null
+  const rect = mapCanvas.value.getBoundingClientRect()
+  return {
+    x: event.clientX - rect.left,
+    y: event.clientY - rect.top,
+  }
+}
 
 const startPainting = (event: MouseEvent) => {
-  isDragging.value = true
-  const rect = mapCanvas.value!.getBoundingClientRect()
-  const x = event.clientX - rect.left
-  const y = event.clientY - rect.top
-  paintTileAt(x, y)
+  if (!cachedTileColor.value) {
+    return
+  }
+  isPainting.value = true
+  const pos = getMousePos(event)
+  if (pos) {
+    paintBrushStroke(pos.x, pos.y)
+  }
 }
 
-const paintWhileDragging = (event: MouseEvent) => {
-  if (!isDragging.value) {
+const paintWhileMoving = (event: MouseEvent) => {
+  if (!isPainting.value) {
     return
   }
 
-  const rect = mapCanvas.value!.getBoundingClientRect()
-  const x = event.clientX - rect.left
-  const y = event.clientY - rect.top
-  paintTileAt(x, y)
+  const pos = getMousePos(event)
+  if (pos) {
+    paintBrushStroke(pos.x, pos.y)
+  }
 }
 
 const stopPainting = () => {
-  isDragging.value = false
+  isPainting.value = false
 }
 </script>
 
@@ -101,7 +111,7 @@ const stopPainting = () => {
       ref="mapCanvas"
       class="map-canvas"
       @mousedown="startPainting"
-      @mousemove="paintWhileDragging"
+      @mousemove="paintWhileMoving"
       @mouseup="stopPainting"
       @mouseleave="stopPainting"
     />

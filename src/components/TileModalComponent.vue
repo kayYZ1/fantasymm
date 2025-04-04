@@ -37,12 +37,12 @@ const selectTile = (tileName: string) => {
       <div class="tile-grid-wrapper">
         <div class="tile-grid">
           <div
-            v-for="(svg, name) in filteredTiles"
+            v-for="(color, name) in filteredTiles"
             :key="name"
             class="tile-icon"
             @click="selectTile(name as string)"
           >
-            <span class="tile-image" v-html="svg"></span>
+            <span class="tile-image" :style="{ backgroundColor: color }"></span>
             <p class="tile-text">{{ name }}</p>
           </div>
         </div>
@@ -116,8 +116,8 @@ const selectTile = (tileName: string) => {
   margin-right: 10px;
 }
 
-.tile-image svg {
-  width: 16px; /* Enforce SVG size */
+.tile-image {
+  width: 16px;
   height: 16px;
 }
 

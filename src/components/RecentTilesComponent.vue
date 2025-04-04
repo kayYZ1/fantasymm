@@ -12,14 +12,14 @@ const selectTile = (tileName: string) => {
 <template>
   <div class="recent-tiles">
     <div
-      v-for="tile in tileStore.recentTilesWithSvgs"
+      v-for="tile in tileStore.recentTilesWithPreview"
       :key="tile.name"
       class="tile-icon"
       @click="selectTile(tile.name)"
     >
-      <span class="svg-container" v-html="tile.svg"></span>
+      <span class="svg-container" v-html="tile.svgPreview"></span>
     </div>
-    <div v-if="!tileStore.recentTiles.length" class="no-tiles">No recent tiles</div>
+    <div v-if="!tileStore.recentTilesWithPreview.length" class="no-tiles">No recent tiles</div>
   </div>
 </template>
 

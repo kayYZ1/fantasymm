@@ -1,40 +1,45 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
-import mapTiles from '@/utils/map-tiles'
+import tileSvgs from '@/utils/map-tiles'
 
 export const useTileStore = defineStore('tileStore', () => {
-  const selectedTile = ref<string | null>(null)
-  const recentTiles = ref<string[]>([])
+  const selectedTileKey = ref<string | null>(null)
+  const recentTileKeys = ref<string[]>([])
 
-  const selectTile = (tileName: string) => {
-    selectedTile.value = tileName
+  const selectTile = (tileKey: string) => {
+    if (tileSvgs[tileKey]) {
+      selectedTileKey.value = tileKey
 
-    const updatedRecent = [tileName, ...recentTiles.value.filter((t) => t !== tileName)]
-    recentTiles.value = updatedRecent.slice(0, 7) // Improve performance later
+      const updatedRecent = [tileKey, ...recentTileKeys.value.filter((key) => key !== tileKey)]
+      recentTileKeys.value = updatedRecent.slice(0, 7)
+    } else {
+      console.warn(`Tile key "${tileKey}" not found in tileSvgVariationsData.`)
+      selectedTileKey.value = null
+    }
   }
 
   const clearSelectedTile = () => {
-    selectedTile.value = null
+    selectedTileKey.value = null
   }
 
-  const selectedTileSvg = computed(() => {
-    return selectedTile.value ? mapTiles[selectedTile.value] : null
+  const selectedTileSvg = computed<string | null>(() => {
+    return selectedTileKey.value ? tileSvgs[selectedTileKey.value] || null : null
   })
 
-  const recentTilesWithSvgs = computed(() => {
-    return recentTiles.value.map((name) => ({
-      name,
-      svg: mapTiles[name],
+  const recentTilesWithPreview = computed(() => {
+    return recentTileKeys.value.map((key) => ({
+      name: key,
+      svgPreview: tileSvgs[key]?.[0] ?? null,
     }))
   })
 
   return {
-    selectedTile,
-    recentTiles,
-    selectTile,
-    clearSelectedTile,
-    selectedTileSvg,
-    recentTilesWithSvgs,
+    selectedTileKey, // The key/name of the currently selected tile type (e.g., 'lushGrass')
+    recentTileKeys, // Array of recently used tile keys
+    selectTile, // Action to select a tile by key
+    clearSelectedTile, // Action to clear selection
+    selectedTileSvg, // Computed array of SVG strings for the selected type
+    recentTilesWithPreview, // Computed array of recent tiles with { name, svgPreview }
   }
 })
