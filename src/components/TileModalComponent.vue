@@ -68,7 +68,7 @@ const selectTile = (tileName: string) => {
 .modal {
   background: var(--color-parchment);
   border: 2px solid var(--color-wood);
-  padding: 2rem;
+  padding: 2rem 4rem 2rem 4rem;
   border-radius: var(--border-radius);
   width: 1000px;
   height: 600px;
@@ -96,7 +96,7 @@ const selectTile = (tileName: string) => {
 
 .tile-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
 }
 

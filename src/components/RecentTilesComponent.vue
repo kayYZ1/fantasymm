@@ -17,7 +17,7 @@ const selectTile = (tileName: string) => {
       class="tile-icon"
       @click="selectTile(tile.name)"
     >
-      <span class="svg-container" v-html="tile.svgPreview"></span>
+      <span class="svg-container" :style="{ backgroundColor: tile.color as string }"></span>
     </div>
     <div v-if="!tileStore.recentTilesWithPreview.length" class="no-tiles">No recent tiles</div>
   </div>

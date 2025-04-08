@@ -3,7 +3,7 @@ import { ref, onMounted, watch } from 'vue'
 import { useTileStore } from '@/stores/tile'
 
 import tileColors from '@/utils/map-tiles'
-import varyColor from '@/utils/vary-color'
+import { getTerrainType, terrainPatterns } from '@/utils/terrain-patterns'
 
 const tileStore = useTileStore()
 
@@ -44,7 +44,11 @@ const paintBrushStroke = (mouseX: number, mouseY: number) => {
 
   const canvas = mapCanvas.value
   const ctx = canvas.getContext('2d')
-  if (!ctx) return
+  if (!ctx) {
+    return
+  }
+  const terrainType = getTerrainType(tileStore.selectedTileKey as string)
+  const baseColor = tileColors[tileStore.selectedTileKey as string]
 
   for (let i = 0; i < brushDensity.value; i++) {
     const offsetX = (Math.random() - 0.5) * 2 * jitterAmount.value
@@ -58,10 +62,7 @@ const paintBrushStroke = (mouseX: number, mouseY: number) => {
       ctx.rotate(Math.random() * Math.PI * 2)
     }
 
-    ctx.fillStyle = varyColor(cachedTileColor.value, 5)
-    ctx.beginPath()
-    ctx.arc(0, 0, stampSize.value / 2, 0, Math.PI * 2)
-    ctx.fill()
+    terrainPatterns[terrainType](ctx, 0, 0, stampSize.value, baseColor)
 
     ctx.restore()
   }
