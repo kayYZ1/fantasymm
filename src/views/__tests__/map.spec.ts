@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 
-import Map from '../views/MapView.vue'
+import Map from '../MapView.vue'
 
 const mockRouter = {
   push: vi.fn(),

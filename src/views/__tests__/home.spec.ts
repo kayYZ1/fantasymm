@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 
-import Home from '../views/HomeView.vue'
+import Home from '../HomeView.vue'
 
 const mockRouter = {
   push: vi.fn(),
