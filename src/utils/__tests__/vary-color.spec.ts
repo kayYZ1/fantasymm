@@ -45,7 +45,7 @@ describe('varyColor', () => {
     const base = '#FF5733'
     const result1 = varyColor(base, 20)
     const result2 = varyColor(base, 20)
-    // Check that results are not identical (due to randomness)
+
     expect(result1).not.toBe(result2)
     expect(result1).toMatch(/^#[0-9A-Fa-f]{6}$/)
     expect(result2).toMatch(/^#[0-9A-Fa-f]{6}$/)

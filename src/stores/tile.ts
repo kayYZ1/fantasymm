@@ -21,12 +21,10 @@ export const useTileStore = defineStore('tileStore', () => {
     selectedTileKey.value = null
   }
 
-  // Get the color of the selected tile
   const selectedTileColor = computed<string | null>(() => {
     return selectedTileKey.value ? tileColors[selectedTileKey.value] || null : null
   })
 
-  // Extract the terrain type from the tile key
   const getTerrainType = (tileKey: string): string => {
     if (tileKey.includes('grass')) return 'grass'
     if (tileKey.includes('water')) return 'water'

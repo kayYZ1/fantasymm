@@ -1,5 +1,5 @@
 const tileColors: { [key: string]: string } = {
-  grass_standard_1: '#4CAF50', // Base green
+  grass_standard_1: '#4CAF50',
   grass_tufted_2: '#388E3C',
   grass_light_3: '#90EE90',
   grass_olive_4: '#8FBC8F',

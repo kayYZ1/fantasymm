@@ -11,7 +11,7 @@ vi.mock('vue-router', () => ({
   useRouter: () => mockRouter,
 }))
 
-HTMLCanvasElement.prototype.getContext = vi.fn() //Mock canvas getContext
+HTMLCanvasElement.prototype.getContext = vi.fn()
 
 describe('Map', () => {
   it('renders all elements on the screen', () => {
