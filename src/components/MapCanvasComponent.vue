@@ -1,20 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import { useTileStore } from '@/stores/tile'
+import { useDrawingOptionsStore } from '@/stores/drawing-options'
 
 import tileColors from '@/utils/map-tiles'
 import { getTerrainType, terrainPatterns } from '@/utils/terrain-patterns'
 
 const tileStore = useTileStore()
+const drawingOptions = useDrawingOptionsStore()
 
 const mapCanvas = ref<HTMLCanvasElement | null>(null)
 const isPainting = ref(false)
 const cachedTileColor = ref<string>('')
-
-const brushDensity = ref(5)
-const stampSize = ref(16)
-const randomizeRotation = ref(true)
-const jitterAmount = ref(8)
 
 onMounted(() => {
   if (mapCanvas.value) {
@@ -50,19 +47,19 @@ const paintBrushStroke = (mouseX: number, mouseY: number) => {
   const terrainType = getTerrainType(tileStore.selectedTileKey as string)
   const baseColor = tileColors[tileStore.selectedTileKey as string]
 
-  for (let i = 0; i < brushDensity.value; i++) {
-    const offsetX = (Math.random() - 0.5) * 2 * jitterAmount.value
-    const offsetY = (0.5 - Math.random()) * 2 * jitterAmount.value
+  for (let i = 0; i < drawingOptions.brushDensity; i++) {
+    const offsetX = (Math.random() - 0.5) * 2 * drawingOptions.jitterAmount
+    const offsetY = (0.5 - Math.random()) * 2 * drawingOptions.jitterAmount
     const drawX = mouseX + offsetX
     const drawY = mouseY + offsetY
 
     ctx.save()
     ctx.translate(drawX, drawY)
-    if (randomizeRotation.value) {
+    if (drawingOptions.randomizeRotation) {
       ctx.rotate(Math.random() * Math.PI * 2)
     }
 
-    terrainPatterns[terrainType](ctx, 0, 0, stampSize.value, baseColor)
+    terrainPatterns[terrainType](ctx, 0, 0, drawingOptions.stampSize, baseColor)
 
     ctx.restore()
   }

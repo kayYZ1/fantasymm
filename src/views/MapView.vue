@@ -1,24 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-
 import Toolbar from '@/components/ToolbarComponent.vue'
 import TileModal from '@/components/TileModalComponent.vue'
+import DrawingOptionsModal from '@/components/DrawingOptionsModalComponent.vue'
 import RecentTilesComponent from '@/components/RecentTilesComponent.vue'
 import MapCanvasComponent from '@/components/MapCanvasComponent.vue'
 
 const router = useRouter()
-
-const showModal = ref(false)
+const activeModal = ref<string | null>(null)
 
 const turnBack = () => router.push('/')
 
-const openTileModal = () => {
-  showModal.value = true
+const openModal = (modalType: string) => {
+  activeModal.value = modalType
 }
 
 const closeModal = () => {
-  showModal.value = false
+  activeModal.value = null
 }
 </script>
 
@@ -28,9 +27,10 @@ const closeModal = () => {
     <MapCanvasComponent />
     <footer class="bottom-bar">
       <RecentTilesComponent />
-      <Toolbar @open-modal="openTileModal" />
+      <Toolbar @open-modal="openModal" />
     </footer>
-    <TileModal :is-open="showModal" @close="closeModal" />
+    <TileModal :is-open="activeModal === 'tile'" @close="closeModal" />
+    <DrawingOptionsModal :is-open="activeModal === 'drawing'" @close="closeModal" />
   </div>
 </template>
 

@@ -2,12 +2,15 @@
 const emit = defineEmits(['open-modal'])
 
 const handleDraw = () => {
-  console.log('Pencil clicked') // Debug
-  emit('open-modal')
+  console.log('Pencil clicked')
+  emit('open-modal', 'tile')
 }
 
-const handleZoom = () => console.log('Zoom tool activated')
-const handleLayers = () => console.log('Layers tool activated')
+const handleDrawingOptions = () => {
+  console.log('Drawing options clicked')
+  emit('open-modal', 'drawing')
+}
+
 const handleSave = () => console.log('Save map activated')
 </script>
 
@@ -25,29 +28,17 @@ const handleSave = () => console.log('Save map activated')
         />
       </svg>
     </button>
-    <button class="bar-button" @click="handleZoom" title="Zoom">
-      <svg class="icon" viewBox="0 0 24 24">
-        <circle cx="11" cy="11" r="6" stroke="#3c2f2f" stroke-width="2" fill="none" />
-        <path d="M16 16l4 4" stroke="#3c2f2f" stroke-width="2" fill="none" stroke-linecap="round" />
-        <path
-          d="M11 8v6m-3-3h6"
-          stroke="#3c2f2f"
-          stroke-width="2"
-          fill="none"
-          stroke-linecap="round"
-        />
-      </svg>
-    </button>
-    <button class="bar-button" @click="handleLayers" title="Layers">
+    <button class="bar-button" @click="handleDrawingOptions" title="Drawing Options">
       <svg class="icon" viewBox="0 0 24 24">
         <path
-          d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
+          d="M7 16c0 2.21 1.79 4 4 4s4-1.79 4-4m-8-8l8 8m-8 0l8-8"
           stroke="#3c2f2f"
           stroke-width="2"
           fill="none"
           stroke-linecap="round"
           stroke-linejoin="round"
         />
+        <circle cx="12" cy="12" r="10" stroke="#3c2f2f" stroke-width="2" fill="none" />
       </svg>
     </button>
     <button class="bar-button" @click="handleSave" title="Save">

@@ -11,10 +11,10 @@ describe('Toolbar component tests', () => {
     expect(buttonGroup.exists()).toBe(true)
 
     const buttons = wrapper.findAll('.bar-button')
-    expect(buttons.length).toBe(4)
+    expect(buttons.length).toBe(3)
 
     const icons = wrapper.findAll('.icon')
-    expect(icons.length).toBe(4)
+    expect(icons.length).toBe(3)
   })
 
   it('handles draw button click', async () => {
@@ -27,31 +27,21 @@ describe('Toolbar component tests', () => {
     expect(consoleLogSpy).toHaveBeenCalledWith('Pencil clicked')
   })
 
-  it('handles zoom button click', async () => {
+  it('handles drawing options button click', async () => {
     const wrapper = mount(Toolbar)
     const consoleLogSpy = vi.spyOn(console, 'log')
 
-    const zoomButton = wrapper.findAll('.bar-button')[1]
-    await zoomButton.trigger('click')
+    const optionsButton = wrapper.findAll('.bar-button')[1]
+    await optionsButton.trigger('click')
 
-    expect(consoleLogSpy).toHaveBeenCalledWith('Zoom tool activated')
-  })
-
-  it('handles layers button click', async () => {
-    const wrapper = mount(Toolbar)
-    const consoleLogSpy = vi.spyOn(console, 'log')
-
-    const layersButton = wrapper.findAll('.bar-button')[2]
-    await layersButton.trigger('click')
-
-    expect(consoleLogSpy).toHaveBeenCalledWith('Layers tool activated')
+    expect(consoleLogSpy).toHaveBeenCalledWith('Drawing options clicked')
   })
 
   it('handles save button click', async () => {
     const wrapper = mount(Toolbar)
     const consoleLogSpy = vi.spyOn(console, 'log')
 
-    const saveButton = wrapper.findAll('.bar-button')[3]
+    const saveButton = wrapper.findAll('.bar-button')[2]
     await saveButton.trigger('click')
 
     expect(consoleLogSpy).toHaveBeenCalledWith('Save map activated')

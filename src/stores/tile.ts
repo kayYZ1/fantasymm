@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+
 import tileColors from '@/utils/map-tiles'
 
 export const useTileStore = defineStore('tileStore', () => {
