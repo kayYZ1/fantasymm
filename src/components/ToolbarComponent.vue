@@ -11,6 +11,11 @@ const handleDrawingOptions = () => {
   emit('open-modal', 'drawing')
 }
 
+const handleText = () => {
+  console.log('Text drawing clicked')
+  emit('open-modal', 'text')
+}
+
 const handleSave = () => console.log('Save map activated')
 </script>
 
@@ -39,6 +44,18 @@ const handleSave = () => console.log('Save map activated')
           stroke-linejoin="round"
         />
         <circle cx="12" cy="12" r="10" stroke="#3c2f2f" stroke-width="2" fill="none" />
+      </svg>
+    </button>
+    <button class="bar-button" @click="handleText" title="Text">
+      <svg class="icon" viewBox="0 0 24 24">
+        <path
+          d="M3 21l6-6m0 0l12-12M9 15l6-6m6-6l-1.5-1.5a2 2 0 00-2.828 0L15 3m6 0L9 15"
+          stroke="#3c2f2f"
+          stroke-width="2"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
       </svg>
     </button>
     <button class="bar-button" @click="handleSave" title="Save">

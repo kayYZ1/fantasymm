@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+
 import Toolbar from '@/components/ToolbarComponent.vue'
 import TileModal from '@/components/TileModalComponent.vue'
 import DrawingOptionsModal from '@/components/DrawingOptionsModalComponent.vue'
+import DrawTextModalComponent from '@/components/TextModalComponent.vue'
 import RecentTilesComponent from '@/components/RecentTilesComponent.vue'
 import MapCanvasComponent from '@/components/MapCanvasComponent.vue'
 
@@ -31,6 +33,7 @@ const closeModal = () => {
     </footer>
     <TileModal :is-open="activeModal === 'tile'" @close="closeModal" />
     <DrawingOptionsModal :is-open="activeModal === 'drawing'" @close="closeModal" />
+    <DrawTextModalComponent :is-open="activeModal === 'text'" @close="closeModal" />
   </div>
 </template>
 

@@ -11,10 +11,10 @@ describe('Toolbar component tests', () => {
     expect(buttonGroup.exists()).toBe(true)
 
     const buttons = wrapper.findAll('.bar-button')
-    expect(buttons.length).toBe(3)
+    expect(buttons.length).toBe(4)
 
     const icons = wrapper.findAll('.icon')
-    expect(icons.length).toBe(3)
+    expect(icons.length).toBe(4)
   })
 
   it('handles draw button click', async () => {
@@ -37,11 +37,21 @@ describe('Toolbar component tests', () => {
     expect(consoleLogSpy).toHaveBeenCalledWith('Drawing options clicked')
   })
 
+  it('handles text drawing button click', async () => {
+    const wrapper = mount(Toolbar)
+    const consoleLogSpy = vi.spyOn(console, 'log')
+
+    const textButton = wrapper.findAll('.bar-button')[2]
+    await textButton.trigger('click')
+
+    expect(consoleLogSpy).toHaveBeenCalledWith('Text drawing clicked')
+  })
+
   it('handles save button click', async () => {
     const wrapper = mount(Toolbar)
     const consoleLogSpy = vi.spyOn(console, 'log')
 
-    const saveButton = wrapper.findAll('.bar-button')[2]
+    const saveButton = wrapper.findAll('.bar-button')[3]
     await saveButton.trigger('click')
 
     expect(consoleLogSpy).toHaveBeenCalledWith('Save map activated')
