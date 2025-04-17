@@ -17,3 +17,5 @@ bun dev
 ## Images
 
 ![Fantasy Map Maker Preview](/public/landingpage-preview.png)
+
+![Fantasy Map Maker Example](/public/examplemap-demo.png)
